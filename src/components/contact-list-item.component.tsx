@@ -1,6 +1,8 @@
 import { CheckBox } from '@ui-kitten/components';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedContacts } from '../screens/share/share.slice';
 import Avatar from './contact-avatar.component';
 
 const ContactListItem = ({contact}: any) => {
@@ -18,6 +20,9 @@ const ContactListItem = ({contact}: any) => {
   const [indeterminate, setIndeterminate] = React.useState(false);
   const [readChecked, setReadChecked] = React.useState(false);
   const [writeChecked, setWriteChecked] = React.useState(false);
+  
+  const dispatch = useDispatch()
+  const share = useSelector((state) => state.share);
 
   const onGroupCheckedChange = (checked) => {
     setReadChecked(checked);
@@ -53,7 +58,9 @@ const ContactListItem = ({contact}: any) => {
   };
 
   const toggleSelect = () => {
-    console.log(readChecked);
+    console.log('toggle');
+    
+    dispatch(setSelectedContacts(contact));
     setReadChecked(!readChecked);
   }
   return (

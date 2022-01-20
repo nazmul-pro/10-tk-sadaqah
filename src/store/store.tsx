@@ -1,9 +1,7 @@
-import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit"
-import {rootReducer} from "./root-reducer"
-
-
+import { configureStore } from '@reduxjs/toolkit'
+import shareSlice from '../screens/share/share.slice'
 export const store = configureStore({
-    reducer : rootReducer,
-    middleware: getDefaultMiddleware(),
-    devTools: process.env.NODE_ENV !== "production"
+  reducer: {
+    share: shareSlice
+  },
 })

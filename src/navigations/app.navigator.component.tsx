@@ -24,7 +24,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Layout, Text } from '@ui-kitten/components';
 import { HomeScreen } from '../screens/home.screen.component';
 import { DonateScreen } from '../screens/donate.screen.component';
-import { ShareScreen } from '../screens/share.screen.component';
+import { ShareScreen } from '../screens/share/share.screen.component';
 import { EmailIcon } from '../core/icons.component';
 
 const { Navigator, Screen } = createBottomTabNavigator();
