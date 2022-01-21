@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, PermissionsAndroid, Platform, SafeAreaView, Share, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import { Button, Divider, Input, Layout, Text, TopNavigation } from '@ui-kitten/components';
+import { Button, Divider, Icon, Input, Layout, Text, TopNavigation } from '@ui-kitten/components';
 import { renderBackAction, renderRightActions } from '../../core/renderer.component';
 import Contacts from 'react-native-contacts';
 import ContactListItem from '../../components/contact-list-item.component'
@@ -32,7 +32,7 @@ export const ShareScreen = ({ navigation }: any) => {
         // Message body
         body: msg,
         // Recipients Number
-        recipients: share.map(c => c?.phoneNumbers[0]?.number),
+        recipients: share.map(c => c?.phoneNumbers[0]?.number).filter(c => !!c),
         // An array of types 
         // "completed" response when using android
         successTypes: ['sent', 'queued'],
@@ -50,7 +50,8 @@ export const ShareScreen = ({ navigation }: any) => {
   }
   
   const msgfromApp = () => {
-    
+    ToastAndroid.show("An group admin will send this sms to the selected numbers", ToastAndroid.LONG);      
+
   }
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -83,7 +84,7 @@ export const ShareScreen = ({ navigation }: any) => {
       // } else {
       //   console.log('contacts', contacts);
       // }
-    });
+    }).catch(err=>err);
   };
   const keyExtractor = (item, idx) => {
     return item?.recordID?.toString() || idx.toString();
@@ -123,19 +124,34 @@ export const ShareScreen = ({ navigation }: any) => {
       <Modal isVisible={isModalVisible} style={styles.modalView}>
         <View style={styles.containerStyle}>
               <View style={styles.content}>
-                <Text style={{fontSize:16,color: 'green', paddingBottom: 20, textAlign: 'center' }}>Share with {share.length} people</Text>
-              <Input
-                style={{minHeight: 70, height: 'auto' }}
-                multiline={true}
-                value={msg}
-                label='Message'
-                placeholder='Place your Text'
-                caption={`${msg.length} characters`}
-                onChangeText={nextValue => setMsg(nextValue)}
-              />  
-            <Button style={{marginTop: 10, backgroundColor: 'blue'}} onPress={msgFromPhone}>Msg from my phone(Charge)</Button>
-            <Button style={{marginTop: 10, backgroundColor: 'green'}} onPress={msgfromApp}>Msg from app(Free)</Button>
-            <Button style={{marginTop: 10, backgroundColor: 'red'}} onPress={toggleModal}>Close</Button>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={toggleModal}>
+                  <Text style={{ textAlign: 'right'}}>
+                    <Icon
+                      style={{width: 28, height: 28,}}
+                      fill='#8F9BB3'
+                      name='close'
+                    />
+                  </Text>
+
+              </TouchableOpacity>
+              <View style={{position:'relative', top: -30, zIndex: -1}}>
+
+                  <Text style={{fontSize:16,color: 'green', paddingBottom: 20, textAlign: 'center' }}>Share with {share.length} people</Text>
+                  <Input
+                    style={{minHeight: 70, height: 'auto' }}
+                    multiline={true}
+                    value={msg}
+                    label='Message'
+                    placeholder='Place your Text'
+                    caption={`${msg.length} characters`}
+                    onChangeText={nextValue => setMsg(nextValue)}
+                  />  
+                <Button style={{marginTop: 10, backgroundColor: 'blue'}} onPress={msgFromPhone}>Msg from my phone(Charge)</Button>
+                <Button style={{marginTop: 10, backgroundColor: 'green'}} onPress={msgfromApp}>Msg from app(Free)</Button>
+                
+              </View>
             </View>
         </View>
       </Modal>
@@ -218,6 +234,5 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     color: '#fff',
     backgroundColor: 'green'
-    //backgroundColor:'black'
   },
 });

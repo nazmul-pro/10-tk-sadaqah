@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const shareSlice = createSlice({
-  name: 'share',
+const donateSlice = createSlice({
+  name: 'donate',
   initialState: [],
   reducers: {
     setSelectedContacts(state, action) { 
@@ -27,6 +27,6 @@ const shareSlice = createSlice({
   }
 })
 
-export const { setSelectedContacts, } = shareSlice.actions
+export const { setSelectedContacts, } = donateSlice.actions
 
-export default shareSlice.reducer
+export default donateSlice.reducer
