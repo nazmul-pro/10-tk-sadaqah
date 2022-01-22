@@ -20,10 +20,10 @@ export const ShareScreen = ({ navigation }: any) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  
+
   const msgFromPhone = () => {
     if (share.length < 1) {
-      ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT);      
+      ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT);
       return;
     }
 
@@ -48,20 +48,20 @@ export const ShareScreen = ({ navigation }: any) => {
       },
     );
   }
-  
+
   const msgfromApp = () => {
-    ToastAndroid.show("An group admin will send this sms to the selected numbers", ToastAndroid.LONG);      
+    ToastAndroid.show("An group admin will send this sms to the selected numbers", ToastAndroid.LONG);
 
   }
   useEffect(() => {
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-          title: 'Contacts',
-          message: 'This app would like to view your contacts.',
-        }).then(() => {
-          loadContacts();
-        }
+        title: 'Contacts',
+        message: 'This app would like to view your contacts.',
+      }).then(() => {
+        loadContacts();
+      }
       );
     } else {
       loadContacts();
@@ -71,7 +71,7 @@ export const ShareScreen = ({ navigation }: any) => {
   const loadContacts = () => {
     Contacts.getAll().then((contacts) => {
       contacts.sort(
-        (a, b) => 
+        (a, b) =>
           a.givenName.toLowerCase() > b.givenName.toLowerCase(),
       );
       setContacts(contacts);
@@ -84,12 +84,12 @@ export const ShareScreen = ({ navigation }: any) => {
       // } else {
       //   console.log('contacts', contacts);
       // }
-    }).catch(err=>err);
+    }).catch(err => err);
   };
   const keyExtractor = (item, idx) => {
     return item?.recordID?.toString() || idx.toString();
   };
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return <ContactListItem contact={item} />;
   };
 
@@ -99,7 +99,7 @@ export const ShareScreen = ({ navigation }: any) => {
         contact.givenName +
         ' ' +
         contact.familyName +
-        ' ' + 
+        ' ' +
         contact?.phoneNumbers[0]?.number + '' + contact?.phoneNumbers[1]?.number
       ).toLowerCase();
 
@@ -109,7 +109,7 @@ export const ShareScreen = ({ navigation }: any) => {
     });
     setContacts(filteredContacts);
   };
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation
@@ -119,40 +119,42 @@ export const ShareScreen = ({ navigation }: any) => {
         accessoryLeft={renderBackAction}
         accessoryRight={renderRightActions}
       />
-      <Divider/>
-      
+      <Divider />
+
       <Modal isVisible={isModalVisible} style={styles.modalView}>
         <View style={styles.containerStyle}>
-              <View style={styles.content}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={toggleModal}>
-                  <Text style={{ textAlign: 'right'}}>
-                    <Icon
-                      style={{width: 28, height: 28,}}
-                      fill='#8F9BB3'
-                      name='close'
-                    />
-                  </Text>
+          <View style={styles.content}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={toggleModal}>
+              <Text style={{ textAlign: 'right' }}>
+                <Icon
+                  style={{ width: 28, height: 28, }}
+                  fill='#8F9BB3'
+                  name='close'
+                />
+              </Text>
 
-              </TouchableOpacity>
-              <View style={{position:'relative', top: -30, zIndex: -1}}>
+            </TouchableOpacity>
+            <View style={{ position: 'relative', top: -30, zIndex: -1 }}>
 
-                  <Text style={{fontSize:16,color: 'green', paddingBottom: 20, textAlign: 'center' }}>Share with {share.length} people</Text>
-                  <Input
-                    style={{minHeight: 70, height: 'auto' }}
-                    multiline={true}
-                    value={msg}
-                    label='Message'
-                    placeholder='Place your Text'
-                    caption={`${msg.length} characters`}
-                    onChangeText={nextValue => setMsg(nextValue)}
-                  />  
-                <Button style={{marginTop: 10, backgroundColor: 'blue'}} onPress={msgFromPhone}>Msg from my phone(Charge)</Button>
-                <Button style={{marginTop: 10, backgroundColor: 'green'}} onPress={msgfromApp}>Msg from app(Free)</Button>
-                
-              </View>
+              <Text style={{ fontSize: 16, color: 'green', paddingBottom: 20, textAlign: 'center' }}>Share with {share.length} people</Text>
+              <Input
+                style={{ minHeight: 70, height: 'auto' }}
+                multiline={true}
+                value={msg}
+                label='Message'
+                placeholder='Place your Text'
+                caption={`${msg.length} characters`}
+                onChangeText={nextValue => setMsg(nextValue)}
+              />
+              <Layout style={{ alignItems: 'center', flexDirection: 'column', paddingTop: 20 }}>
+                <Button style={styles.fromPhoneBtn} onPress={msgFromPhone}>Msg from my phone</Button>
+                <Button style={styles.fromAppBtn} onPress={msgfromApp}>Msg from app</Button>
+              </Layout>
+
             </View>
+          </View>
         </View>
       </Modal>
       <View style={styles.container}>
@@ -168,14 +170,14 @@ export const ShareScreen = ({ navigation }: any) => {
           style={styles.list}
         />
         {
-          share.length > 0 &&          
+          share.length > 0 &&
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={toggleModal}
             style={styles.touchableOpacityStyle}>
-              <Text style={styles.shareButton}>
-                Share with {share.length} {share.length > 1 ? 'people' : 'person'}
-              </Text>
+            <Text style={styles.shareButton}>
+              Share with {share.length} {share.length > 1 ? 'people' : 'person'}
+            </Text>
           </TouchableOpacity>
         }
       </View>
@@ -192,10 +194,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   containerStyle: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'flex-end'
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end'
   },
   content: {
     padding: 20,
@@ -234,5 +236,20 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     color: '#fff',
     backgroundColor: 'green'
+  },
+  fromPhoneBtn: {
+    width: '60%',
+    borderRadius: 30,
+    marginTop: 30,
+    textAlign: 'center',
+    backgroundColor: '#55a95e',
+    borderWidth: 0
+  },
+  fromAppBtn: {
+    width: '60%',
+    borderRadius: 30,
+    textAlign: 'center',
+    marginTop: 20,
+    borderWidth: 0
   },
 });
