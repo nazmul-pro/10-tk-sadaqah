@@ -23,6 +23,12 @@ export const InfoIcon = (props) => (
 export const LogoutIcon = (props) => (
     <Icon {...props} name='log-out' />
 );
-export const EmailIcon = (props) => (
-    <Icon {...props} name='email-outline'/>
-  );
+export const DonateIcon = (props) => (
+    <Icon {...props} name='heart-outline'/>
+);
+export const UpdatesIcon = (props) => (
+    <Icon {...props} name='bell-outline'/>
+);
+export const ShareIcon = (props) => (
+    <Icon {...props} name='share-outline'/>
+);

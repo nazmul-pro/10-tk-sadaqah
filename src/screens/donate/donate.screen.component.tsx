@@ -49,10 +49,10 @@ export const DonateScreen = ({ navigation }: any) => {
           months.map(m => (
             <><TouchableOpacity
               style={{ width: '30%', margin: 5 }}
-              activeOpacity={0.7}
+              activeOpacity={0.7} key={m.id}
               onPress={index => selectMonth(m)}
             >
-              <Text style={[styles.month, m.id !== 1 ? styles.paidMonth : '']}>
+              <Text key={m.id} style={[styles.month, m.id !== 1 ? styles.paidMonth : '']}>
                 {m.name}
               </Text>
             </TouchableOpacity>
