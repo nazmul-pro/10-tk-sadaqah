@@ -54,6 +54,8 @@ export const ShareScreen = ({ navigation }: any) => {
 
   }
   useEffect(() => {
+    console.log('effected');
+    
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
@@ -70,13 +72,16 @@ export const ShareScreen = ({ navigation }: any) => {
 
   const loadContacts = () => {
     Contacts.getAll().then((contacts) => {
-      contacts.sort(
-        (a, b) =>
-          a.givenName.toLowerCase() > b.givenName.toLowerCase(),
-      );
+      contacts.sort((a,b) => (a.displayName > b.displayName) ? 1 : ((b.displayName > a.displayName) ? -1 : 0))
+// console.log(contacts);
+
+      // contacts.sort(
+      //   (a, b) =>
+      //     a.displayName.toLowerCase() > b.displayName.toLowerCase(),
+      // );
       setContacts(contacts);
       setInMemContacts(contacts);
-      handleSumbit()
+      // handleSumbit()
       // console.log('contacts -> ', contacts);
       // if (err === 'denied') {
       //   alert('Permission to access contacts was denied');
@@ -87,9 +92,13 @@ export const ShareScreen = ({ navigation }: any) => {
     }).catch(err => err);
   };
   const keyExtractor = (item, idx) => {
+    // console.log(item, idx);
+    
     return item?.recordID?.toString() || idx.toString();
   };
   const renderItem = ({ item, index }) => {
+    console.log('rendered');
+    
     return <ContactListItem contact={item} />;
   };
 
@@ -167,10 +176,12 @@ export const ShareScreen = ({ navigation }: any) => {
           data={contacts}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          extraData={0}
           style={styles.list}
+          maxToRenderPerBatch={15}
         />
         {
-          share.length > 0 &&
+          share.length > 0 ?
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={toggleModal}
@@ -179,6 +190,12 @@ export const ShareScreen = ({ navigation }: any) => {
               Share with {share.length} {share.length > 1 ? 'people' : 'person'}
             </Text>
           </TouchableOpacity>
+          : 
+          <View style={styles.touchableOpacityStyle}>            
+          <Text style={styles.shareButton}>
+            Select contacts to share
+          </Text>
+          </View>
         }
       </View>
     </SafeAreaView>

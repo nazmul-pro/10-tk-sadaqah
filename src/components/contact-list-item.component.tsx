@@ -1,4 +1,4 @@
-import { CheckBox } from '@ui-kitten/components';
+import { CheckBox, Icon } from '@ui-kitten/components';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,8 +58,6 @@ const ContactListItem = ({contact}: any) => {
   };
 
   const toggleSelect = () => {
-    console.log('toggle');
-    
     dispatch(setSelectedContacts(contact));
     setReadChecked(!readChecked);
   }
@@ -88,12 +86,11 @@ const ContactListItem = ({contact}: any) => {
             {contact?.phoneNumbers[0]?.number}
           </Text>
         </View>
-        <CheckBox
-          style={styles.option}
-          status={'success'}
-          checked={readChecked}
-          onChange={onReadCheckedChange}>        
-        </CheckBox>
+        {
+          share.find(c => contact?.phoneNumbers[0]?.number === c?.phoneNumbers[0]?.number) ?
+          <Icon style={{height:24, width: 24, top:10,}} fill='#55a95e' name='checkmark-circle-outline'/>
+          : null
+        }
       </View>
     </TouchableNativeFeedback>
 
