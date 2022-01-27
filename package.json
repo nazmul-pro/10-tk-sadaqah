@@ -24,6 +24,7 @@
     "react": "17.0.1",
     "react-native": "0.64.1",
     "react-native-contacts": "^7.0.3",
+    "react-native-device-info": "^8.4.8",
     "react-native-gesture-handler": "^2.1.0",
     "react-native-modal": "^13.0.0",
     "react-native-safe-area-context": "^3.3.2",

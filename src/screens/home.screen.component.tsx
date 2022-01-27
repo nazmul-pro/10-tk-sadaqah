@@ -1,40 +1,43 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { Button, Divider, Layout, Text, TopNavigation } from '@ui-kitten/components';
+import { Divider, Layout, Text, TopNavigation } from '@ui-kitten/components';
 import { renderBackAction, renderRightActions } from '../core/renderer.component';
-import {db} from '../constants/firebase-config';
-import { collection, doc, setDoc } from 'firebase/firestore/lite';
-import { getDocs } from 'firebase/firestore/lite';
+import DeviceInfo from 'react-native-device-info';
+import { UserService } from '../services/userService';
+import { IUserModel } from '../models/userModel';
 
+let userInfoData: IUserModel = {
+  name: ''
+};
 export const HomeScreen = ({ navigation }: any) => {
 
+  //check if exists
+  new UserService().userIsExists("users", DeviceInfo.getUniqueId()).then((data) => {
+    if (data.data()) {
+      userInfoData = data.data() as IUserModel;
+      console.log(userInfoData);
+      userInfoData.name = "update data checking";
+
+      //update user
+      new UserService().updateUser("users", DeviceInfo.getUniqueId(), userInfoData).then((data) => {
+        console.log('update sucessfully');
+      });
 
 
+    } else {
+      addUser();
+    }
+  });
 
 
- 
+  //add user
+  const addUser = () => {
+    new UserService().addUser("users", DeviceInfo.getUniqueId(), userInfoData).then((data) => {
+      console.log('added');
+    });
+  };
 
-const Geyt=async()=>{
-// const city=collection(db,"users");
-// const citsnapshot=await getDocs(city);
-// const cioo=citsnapshot.docs.map(doc=>doc.data());
-// console.log(cioo);
-await setDoc(doc(db, "users", "LA"), {
-  name: "Los Angeles",
-  age: 6
-});
-}
-Geyt();
-// app.firestore().
-//   setDoc(doc(db, "users", "LA"), {
-//     name: "Los Angeles",
-//     age: 5
-//   }).then(()=>{
-//     console.log("succgcg");
-//   });
-  //firebase.firestore().collection('users');
-  // var result = firebase.firestore().collection('users');
-  // console.log(result);
+
   const navigateDetails = () => {
     navigation.navigate('Details');
   };
@@ -56,3 +59,6 @@ Geyt();
     </SafeAreaView>
   );
 };
+
+
+
