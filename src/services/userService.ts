@@ -4,10 +4,6 @@ import { appFirebaseConfig } from '../constants/firebase-config';
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore/lite';
 export class UserService {
 
-    UserService() {
-
-    }
-
     public addUser(dbName: string, deviceId: string, userModel: IUserModel) {
         return setDoc(doc(appFirebaseConfig, dbName, deviceId), {
             name: userModel.name,

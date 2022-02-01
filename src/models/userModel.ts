@@ -2,7 +2,7 @@ export interface IUserModel {
     name: string;
     phoneNumber?: string;
     email?: string;
-    isActive?:boolean;
+    isActive?: boolean;
     payments?: IDonate[];
     share?: IShare[];
 }
@@ -15,5 +15,6 @@ export interface IDonate {
     paymentDate?: Date;
 }
 export interface IShare {
-    phoneNumber?: string;
+    message: string;
+    phoneNumber: string;//all number with json stringfy.
 }

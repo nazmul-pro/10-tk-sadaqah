@@ -1,15 +1,48 @@
-import React from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useEffect } from 'react';
+import { Platform, SafeAreaView } from 'react-native';
 import { Divider, Layout, Text, TopNavigation } from '@ui-kitten/components';
 import { renderBackAction, renderRightActions } from '../core/renderer.component';
 import DeviceInfo from 'react-native-device-info';
+import '@react-native-firebase/messaging';
 import { UserService } from '../services/userService';
 import { IUserModel } from '../models/userModel';
+import PushNotification from 'react-native-push-notification'; // ' react-native-push-notification';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/messaging';
+import { appFirebaseConfig } from '../constants/firebase-config';
+import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 
 let userInfoData: IUserModel = {
   name: ''
 };
 export const HomeScreen = ({ navigation }: any) => {
+
+  useEffect(() => {
+    firebase.messaging().onMessage(response => {
+      console.log('notification');
+      console.log(JSON.stringify(response));
+      if (Platform.OS !== 'ios') {
+        showNotification(response.notification!);
+        return;
+      }
+    });
+  }, []);
+  const showNotification = (
+    notification: FirebaseMessagingTypes.Notification,
+  ) => {
+    PushNotification.localNotification({
+      title: notification.title,
+      message: notification.body!,
+    });
+  };
+
+
+
+
+
+
+
+
 
   //check if exists
   new UserService().userIsExists("users", DeviceInfo.getUniqueId()).then((data) => {
@@ -22,8 +55,6 @@ export const HomeScreen = ({ navigation }: any) => {
       new UserService().updateUser("users", DeviceInfo.getUniqueId(), userInfoData).then((data) => {
         console.log('update sucessfully');
       });
-
-
     } else {
       addUser();
     }

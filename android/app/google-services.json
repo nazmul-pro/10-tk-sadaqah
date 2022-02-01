@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "839242192963",
+    "firebase_url": "https://tksadaqah-default-rtdb.firebaseio.com",
+    "project_id": "tksadaqah",
+    "storage_bucket": "tksadaqah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839242192963:android:547888b02725e9f5541cf6",
+        "android_client_info": {
+          "package_name": "com.tentakasadaqah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839242192963-m4qgrbuuikdvcuruc1mh9nso8vaaohod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tentakasadaqah",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "839242192963-jsefracmjrok2809o4p4qf5s4vhg8h45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC17scJthmVS2ZnqRcqKFDGeI7PANOFs9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839242192963-jsefracmjrok2809o4p4qf5s4vhg8h45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
