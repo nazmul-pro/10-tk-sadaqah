@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Image, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Card, List, Text, TopNavigation } from '@ui-kitten/components';
 import { renderBackAction, renderRightActions } from '../core/renderer.component';
 import DeviceInfo from 'react-native-device-info';
@@ -13,7 +13,7 @@ let userInfoData: IUserModel = {
   name: ''
 };
 
-export const HomeScreen = ({ navigation }: any) => {
+export const HomeScreen = () => {
   const [fetchPostData, postData] = useState<any>(null);
   //notification changes 
   //let postData:any=[];
@@ -38,22 +38,23 @@ export const HomeScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     new PostService().getPost("post").then((data) => {
-      let fetchData = Object.values(data.docs).map(doc => doc.data());
+      let fetchData = data.docs.map(doc => doc.data()).filter(x => x.isActive);
+      //&& new Date(x.expireDate).getTime() > new Date().getTime()
       postData(fetchData);
-    }).catch(function(error) {
+      console.log(fetchData);
+    }).catch(function (error) {
       _handleError(`There has been a problem with your fetch operation: ${error.message}`);
-    });;
+    });
 
     new UserService().userIsExists("users", DeviceInfo.getUniqueId()).then((data) => {
       if (data.data()) {
         userInfoData = data.data() as IUserModel;
-        console.log(userInfoData);
       } else {
         addUser();
       }
     });
   });
-  
+
   function _handleError(errorMessage) {
     console.log(errorMessage);
   }
@@ -78,8 +79,9 @@ export const HomeScreen = ({ navigation }: any) => {
     </View>
   );
 
-  const renderItemFooter = (footerProps) => (
-    <Text {...footerProps}>
+  const renderItemFooter = (footerProps, info) => (
+    <Text {...footerProps}
+      onPress={() => { Linking.openURL(info.item.url) }}>
       more details
     </Text>
   );
@@ -89,10 +91,13 @@ export const HomeScreen = ({ navigation }: any) => {
       style={styles.item}
       status='basic'
       header={headerProps => renderItemHeader(headerProps, info)}
-      footer={renderItemFooter}>
+      footer={footerProps => renderItemFooter(footerProps, info)}>
       <Text>
         {info.item.description}
       </Text>
+      <Image source={{ uri: info.item.imgLink }}
+        style={{ width: 200, height: 200 }}
+      />
     </Card>
   );
 
